@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import tw from "tailwind-styled-components";
+import Link from "next/link";
+import DarkmodeButton from "./components/DarkmodeButton";
 const search = () => {
+  const [pickup, setPickup] = useState("");
+  const [dropoff, setDropoff] = useState("");
+
   return (
     <Wrapper>
       {/* button container */}
+      <DarkmodeButton />
       <ButtonContainer>
-        <BackButton src="https://img.icons8.com/ios-filled/50/000000/left.png" />
+        <Link href="/">
+          <BackButton src="https://img.icons8.com/ios-filled/50/000000/left.png" />
+        </Link>
       </ButtonContainer>
       {/* input container */}
       <InputContainer>
@@ -15,8 +23,16 @@ const search = () => {
           <Square src="https://img.icons8.com/windows/50/000000/square-full.png" />
         </FromToIcons>
         <InputBoxes>
-          <Input placeholder="Enter pickup location" />
-          <Input placeholder="Where to" />
+          <Input
+            placeholder="Enter pickup location"
+            value={pickup}
+            onChange={(e) => setPickup(e.target.value)}
+          />
+          <Input
+            placeholder="Where to"
+            value={dropoff}
+            onChange={(e) => setDropoff(e.target.value)}
+          />
         </InputBoxes>
         <PlusIcon src="https://img.icons8.com/ios/50/000000/plus-math.png" />
       </InputContainer>
@@ -26,21 +42,31 @@ const search = () => {
         Saved Places
       </SavedPlaces>
       {/* confirm location */}
-      <ConfirmButton>Confirm Locations</ConfirmButton>
+      <Link
+        href={{
+          pathname: "/confirm",
+          query: {
+            pickup,
+            dropoff,
+          },
+        }}
+      >
+        <ConfirmButton>Confirm Locations</ConfirmButton>
+      </Link>
     </Wrapper>
   );
 };
 
 export default search;
 const Wrapper = tw.div`
-bg-gray-200 h-screen
+bg-gray-200 h-screen dark:bg-black
 
 `;
 const ButtonContainer = tw.div`
 bg-white px-4
 `;
 const BackButton = tw.img`
-h-12
+h-12 cursor-pointer
 `;
 const FromToIcons = tw.div`
 w-10 flex flex-col mr-2 items-center
@@ -73,5 +99,5 @@ const StarIcon = tw.img`
 bg-gray-400 w-10 h-10 p-2 rounded-full mr-2
 `;
 const ConfirmButton = tw.div`
-bg-black text-white flex items-center justify-center text-lg p-2 mt-4 mx-4
+bg-black text-white flex items-center justify-center text-lg p-2 mt-4 mx-4 cursor-pointer dark:bg-gray-500
 `;
